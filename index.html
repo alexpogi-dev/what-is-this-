@@ -783,6 +783,23 @@ body.show-parallax #parallax-bg {
 .floating-photo {
     background: url("photo25.jpg") center/cover no-repeat;
 }
+#musicBtn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: 999px;
+    border: none;
+
+    background: rgba(255, 182, 193, 0.9);
+    color: #4a0033;
+    cursor: pointer;
+
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
 
 
     </style>
@@ -801,7 +818,7 @@ body.show-parallax #parallax-bg {
     <div class="bubble"></div>
         <!-- Floating photo bubbles -->
 <div class="floating-photo" style="top: 10%; left: 15%; animation-duration: 35s; animation-delay: 0s;">
-    <img src="photo25.jpg" alt="Us">
+    <img src="photo1.jpg" alt="Us">
 </div>
     <!-- LOGIN BOX -->
     <div id="login">
@@ -899,7 +916,7 @@ body.show-parallax #parallax-bg {
                     <p class="caption">Explain this moment...</p>
                 </div>
                 <div>
-                    <img src="photo25.jpg" onclick="openModal(this)" />
+                    <img src="photo10.jpg" onclick="openModal(this)" />
                     <p class="caption">Share the story...</p>
                 </div>
                 <div>
@@ -1309,9 +1326,34 @@ function floatLoginBox() {
 }
 
 floatLoginBox();
+const musicBtn = document.getElementById("musicBtn");
+
+let isPlaying = false;
+
+musicBtn.addEventListener("click", () => {
+    if (!isPlaying) {
+        music.play().then(() => {
+            music.volume = 0.5; // safe volume
+            musicBtn.textContent = "🔇 Music OFF";
+            isPlaying = true;
+        }).catch(err => {
+            console.log("Autoplay blocked:", err);
+        });
+    } else {
+        music.pause();
+        musicBtn.textContent = "🔊 Music ON";
+        isPlaying = false;
+    }
+});
+
 </script>
+
     </div>
 </div>
+<audio id="bgMusic" loop preload="auto">
+    <source src="music/bgmusic.mp3" type="audio/mpeg">
+</audio>
 
+<button id="musicBtn">🔊 Music ON</button>
 </body>
 </html>
