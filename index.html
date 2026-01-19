@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Add at the top inside <head> -->
+    <link href="https://fonts.googleapis.com/css2?family=Merriweather:ital@1&display=swap" rel="stylesheet">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I love u website</title>
+    <style>
+/* Apply readable cursive style */
+body, p, h1, h2, h3, h4, h5, h6, .caption, .final-popup-text, .love-text, input, button {
+    font-family: 'Georgia', serif;
+    font-style: italic;   /* makes it cursive-like */
+    line-height: 1.8;     /* improves readability */
+}
+/* Optional placeholders */
+input::placeholder {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+}
+
+        /* LOGIN CONTAINER */
+#login-container {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f8bbd0; /* SOLID PINK */
+    z-index: 10;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background: transparent;
+    color: #4a0033;
+    position: relative;
+    overflow-x: hidden;
+}
+
+    /* CENTER CONTENT */
+#login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f8bbd0, #fce4ec);
+}
+.section,
+#login {
+    backdrop-filter: blur(6px);
+    background: rgba(255, 255, 255, 0.85);
+}
+
+/* BUBBLES */
+.bubble {
+    position: absolute;
+    bottom: -150px;
+    background: rgba(255,255,255,0.4);
+    border-radius: 50%;
+    opacity: 0.6;
+    animation: rise 10s infinite linear;
+}
+
+/* random size & position for variety */
+.bubble:nth-child(1){ left:10%; width:20px; height:20px; animation-duration:12s;}
+.bubble:nth-child(2){ left:25%; width:30px; height:30px; animation-duration:14s; animation-delay:2s;}
+.bubble:nth-child(3){ left:40%; width:25px; height:25px; animation-duration:11s; animation-delay:1s;}
+.bubble:nth-child(4){ left:55%; width:35px; height:35px; animation-duration:16s; animation-delay:3s;}
+.bubble:nth-child(5){ left:70%; width:20px; height:20px; animation-duration:13s; animation-delay:0s;}
+.bubble:nth-child(6){ left:85%; width:40px; height:40px; animation-duration:18s; animation-delay:5s;}
+.bubble:nth-child(7){ left:15%; width:25px; height:25px; animation-duration:15s; animation-delay:4s;}
+.bubble:nth-child(8){ left:35%; width:30px; height:30px; animation-duration:17s; animation-delay:2s;}
+.bubble:nth-child(9){ left:60%; width:22px; height:22px; animation-duration:12s; animation-delay:1s;}
+.bubble:nth-child(10){ left:80%; width:28px; height:28px; animation-duration:16s; animation-delay:3s;}
+
+/* BUBBLE FLOATING ANIMATION */
+@keyframes rise {
+    0% { transform: translateY(0) scale(1); opacity: 0.5; }
+    50% { opacity: 0.7; }
+    100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+}
+
+        * {
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+    margin: 0;
+    min-height: 100vh;
+    background: none; /* ❗ REMOVE GRADIENT */
+    color: #4a0033;
+}
+
+        /* 3D PARALLAX BACKGROUND */
+/* 3D PARALLAX BACKGROUND */
+#parallax-bg {
+    position: fixed;
+    inset: 0;
+    background-image: url('bg3.jpg');
+    background-size: cover;
+    background-position: center;
+    z-index: -1;
+    will-change: transform;
+    transform: scale(1.05);
+    opacity: 0;              /* ❌ HIDDEN BY DEFAULT */
+    pointer-events: none;
+    transition: opacity 1s ease;
+}
+
+/* ACTIVE STATE (AFTER LOGIN) */
+body.show-parallax #parallax-bg {
+    opacity: 1;              /* ✅ SHOW AFTER LOGIN */
+}
+
+/* soft overlay so text stays readable */
+#parallax-bg::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+   background: rgba(0,0,0,0);
+}
+
+        /* PASSWORD SCREEN */
+        #login {
+    position: relative; /* keep it relative for z-index with bubbles */
+    z-index: 10;        /* so it stays above bubbles */
+    background: #fff;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+    text-align: center;
+    max-width: 400px;
+    width: 90%;           /* responsive */
+    display: flex;
+    flex-direction: column;
+}
+        #login h1 {
+            color: #ad1457;
+        }
+
+        #login input {
+            width: 100%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 10px;
+            border: 1px solid #ccc;
+        }
+
+        #login button {
+            width: 100%;
+            padding: 12px;
+            border-radius: 20px;
+            border: none;
+            background: #ad1457;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #error {
+            color: red;
+            display: none;
+        }
+
+        /* MAIN SITE */
+        #site {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
+            text-align: center;
+            padding: 60px 20px;
+        }
+
+        .buttons {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .buttons button {
+            padding: 18px 30px;
+            border-radius: 30px;
+            border: none;
+            background: #ad1457;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+        /* FINAL HIDDEN SECTION */
+.final-section {
+    background: linear-gradient(135deg, #fff0f7, #fde4f1);
+    box-shadow: 0 25px 60px rgba(173, 20, 87, 0.3);
+    color: #6a003a;
+    text-align: center;
+    padding: 50px 35px;
+    position: relative;
+    overflow: hidden;
+}
+
+.final-section h3 {
+    font-size: 2.4rem;
+    margin-bottom: 30px;
+    letter-spacing: 1px;
+}
+
+.final-text {
+    font-family: 'Georgia', serif;
+    font-size: 1.25rem;
+    line-height: 2;
+    max-width: 700px;
+    margin: auto;
+    opacity: 0;
+    animation: fadeInText 3s ease forwards;
+}
+
+.final-sign {
+    margin-top: 40px;
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0;
+    animation: fadeInText 3s ease forwards 1.5s;
+}
+
+        .section {
+            display: none;
+            margin-top: 50px;
+            background: #fff;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 900px;
+            margin-inline: auto;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        /* LOVE LETTER SECTION */
+        .love-letter {
+            background: linear-gradient(135deg, #fff0f7, #ffe6f0);
+            box-shadow: 0 20px 40px rgba(173, 20, 87, 0.25);
+            color: #880e4f;
+            overflow: hidden;
+        }
+        .love-letter {
+    background: linear-gradient(135deg, #fff0f7, #ffe6f0);
+    box-shadow: 0 20px 40px rgba(173, 20, 87, 0.25);
+    color: #880e4f;
+    position: relative;
+    padding: 30px;
+    overflow: hidden;
+    border-radius: 30px;
+}
+
+.love-letter {
+    background: linear-gradient(135deg, #fff0f7, #ffe6f0);
+    box-shadow: 0 20px 40px rgba(173, 20, 87, 0.25);
+    color: #880e4f;
+    position: relative;
+    padding: 30px;
+    overflow: hidden;
+    border-radius: 30px;
+}
+        .love-letter h3 {
+            font-size: 2.2rem;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+       /* LOVE LETTER TEXT IMPROVED */
+.love-text {
+    font-family: 'Merriweather', serif; /* elegant and readable */
+    font-style: italic;
+    font-size: 1rem;       /* smaller than before */
+    line-height: 1.9;      /* nice spacing for readability */
+    letter-spacing: 0.5px;
+    text-align: justify;    /* neat edges */
+    text-justify: inter-word;
+    max-width: 720px;       /* optional, keeps lines comfortable */
+    margin: 0 auto;         /* center in section */
+    color: #880e4f;
+}
+        /* GALLERY */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .gallery div {
+            background: #f8bbd0;
+            padding: 15px;
+            border-radius: 15px;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        .gallery img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .caption {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* VIDEO GALLERY */
+        .video-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 30px;
+        }
+
+        .video-card {
+            background: #fff;
+            border-radius: 22px;
+            overflow: hidden;
+            cursor: pointer;
+            box-shadow: 0 15px 35px rgba(173, 20, 87, 0.18);
+            transition: transform 0.35s ease, box-shadow 0.35s ease;
+            position: relative;
+        }
+
+        .video-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 22px 45px rgba(173, 20, 87, 0.28);
+        }
+
+        .video-card video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+            pointer-events: none;
+        }
+
+        .video-card .caption {
+            padding: 18px 18px 22px;
+            font-size: 0.95rem;
+            line-height: 1.8;
+            color: #4a0033;
+            text-align: left;
+        }
+
+        .play-overlay {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.25);
+            border-radius: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+            font-size: 3rem;
+            color: white;
+        }
+
+        .video-card:hover .play-overlay {
+            opacity: 1;
+        }
+
+        /* 3D CAROUSEL */
+        .carousel-container {
+            position: relative;
+            width: 80%;
+            max-width: 900px;
+            margin: 40px auto;
+            perspective: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .carousel {
+            width: 100%;
+            height: 300px;
+            transform-style: preserve-3d;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            transition: transform 1.5s ease-in-out;
+        }
+
+        .carousel-item {
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 1s, opacity 1s;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 2.5rem;
+            background: rgba(173, 20, 87, 0.8);
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        .carousel-btn:hover {
+            background: #c2185b;
+        }
+
+        .carousel-btn.prev {
+            left: -60px;
+        }
+
+        .carousel-btn.next {
+            right: -60px;
+        }
+
+        /* MODALS */
+        #gallery-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        #modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        #modal-img {
+            max-width: 90%;
+            max-height: 70%;
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+
+        #modal-caption {
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 80%;
+        }
+
+        #video-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            flex-direction: column;
+        }
+
+        #video-modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+
+        #modal-video {
+            max-width: 90%;
+            max-height: 80%;
+            border-radius: 20px;
+        }
+
+        #modal-video-caption {
+            color: white;
+            font-size: 1.2rem;
+            text-align: center;
+            max-width: 80%;
+            margin-top: 10px;
+        }
+        /* FINAL POPUP OVERLAY */
+#final-popup {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.8s ease;
+}
+
+/* SHOW STATE */
+#final-popup.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+/* POPUP BOX */
+.final-popup-box {
+    background: linear-gradient(135deg, #fff0f7, #fde4f1);
+    padding: 45px 40px;
+    border-radius: 25px;
+    max-width: 520px;
+    width: 90%;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 30px 70px rgba(173, 20, 87, 0.35);
+    animation: popupRise 1s ease forwards;
+}
+
+/* CLOSE BUTTON */
+#final-close {
+    position: absolute;
+    top: 15px;
+    right: 22px;
+    font-size: 1.8rem;
+    cursor: pointer;
+    color: #ad1457;
+}
+
+/* TEXT */
+.final-popup-box h3 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+    color: #880e4f;
+}
+
+.final-popup-text {
+    font-family: 'Georgia', serif;
+    font-size: 1.2rem;
+    line-height: 2;
+    color: #6a003a;
+}
+
+.final-popup-sign {
+    margin-top: 35px;
+    font-style: italic;
+    font-size: 1.1rem;
+}
+
+/* ANIMATION */
+@keyframes popupRise {
+    from {
+        transform: translateY(40px) scale(0.95);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+    }
+}
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInText {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes floatHeart {
+            0% {
+                transform: translateY(0) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-200px) scale(1.3);
+                opacity: 0;
+            }
+        }
+
+        @keyframes floatMoment {
+            0% {
+                transform: translateY(100vh) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 0.4;
+            }
+            100% {
+                transform: translateY(-10vh) scale(1.2);
+                opacity: 0;
+            }
+        }
+
+        @keyframes heartFloat {
+            0% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+            100% {
+                transform: translate(-50%, -120%) scale(1.6);
+                opacity: 0;
+            }
+        }
+
+        /* FLOATING HEARTS */
+        .heart {
+            position: absolute;
+            font-size: 1.5rem;
+            color: #f48fb1;
+            animation: floatHeart 4s ease-in infinite;
+            pointer-events: none;
+        }
+
+        .moment-heart {
+            position: absolute;
+            font-size: 1.2rem;
+            opacity: 0.25;
+            animation: floatMoment 12s linear infinite;
+            pointer-events: none;
+        }
+
+        .cursor-heart {
+    position: fixed;
+    font-size: 1rem;
+    pointer-events: none;
+    animation: heartFloat 1s ease-out forwards;
+    z-index: 1000; /* ✅ LOWER than popup */
+}
+
+        /* BUTTONS */
+        button {
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 12px 25px rgba(173, 20, 87, 0.35);
+        }
+
+        button:active {
+            transform: scale(1.03);
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .video-card video {
+                height: 170px;
+            }
+            .play-overlay::before {
+                width: 60px;
+                height: 60px;
+                font-size: 1.7rem;
+            }
+        }
+        /* FALLING PETALS */
+.petal {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: url('petal.png') no-repeat center/contain; /* add small petal PNG */
+    top: -50px;
+    left: 0;
+    opacity: 0.7;
+    animation: fallPetal linear infinite;
+}
+@keyframes fallPetal {
+    0% { transform: translateY(0) rotate(0deg); opacity: 0.7; }
+    100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+}
+/* RIDDLE LOCK */
+#riddle-lock {
+    background: linear-gradient(135deg, #fff0f7, #ffe6f0);
+    padding: 30px;
+    border-radius: 20px;
+    max-width: 500px;
+    margin: 30px auto;
+    box-shadow: 0 15px 35px rgba(173, 20, 87, 0.25);
+}
+
+#riddle-lock input {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    margin: 15px 0;
+}
+
+#riddle-lock button {
+    background: #ad1457;
+    color: white;
+    padding: 12px 25px;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+#riddle-error {
+    color: #c2185b;
+    display: none;
+    margin-top: 10px;
+}
+
+/* LOCK MOMENTS CONTENT */
+#moments .video-gallery {
+    display: none;
+}
+.section {
+    transform: translateY(30px);
+}
+
+.section.active {
+    transform: translateY(0);
+    opacity: 1;
+}
+/* PHOTO BUBBLES */
+/* PHOTO BUBBLES (MEDIUM SIZE) */
+.photo-bubble {
+    position: absolute;
+    bottom: -150px;
+    width: 100px;   /* medium width */
+    height: 100px;  /* medium height */
+    border-radius: 50%;
+    overflow: hidden;
+    animation: floatPhoto 12s linear infinite;
+    opacity: 0.85;  /* a little more visible */
+}
+
+.photo-bubble img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+/* FLOATING ANIMATION */
+/* SMALLER FLOATING SCATTERED PHOTOS */
+.floating-photo {
+    position: absolute;
+    width: 50px;       /* smaller width */
+    height: 50px;      /* smaller height */
+    object-fit: cover;
+    border-radius: 12px;   /* soft corners */
+    pointer-events: none;   /* allow typing over them */
+    opacity: 0.85;
+    animation: floatScatter linear infinite;
+}
+
+/* FLOATING ANIMATION */
+@keyframes floatScatter {
+    0%   { transform: translate(0px, 0px) rotate(0deg); }
+    25%  { transform: translate(10px, -8px) rotate(8deg); }
+    50%  { transform: translate(-8px, 10px) rotate(-8deg); }
+    75%  { transform: translate(8px, -10px) rotate(10deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+    </style>
+</head>
+<body>
+    <div id="parallax-bg"></div>
+    <!-- PASSWORD PAGE -->
+    <div id="login-container">
+    <!-- BUBBLES -->
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+    <div class="bubble"></div>
+        <!-- Floating photo bubbles -->
+<div class="floating-photo" style="top: 10%; left: 15%; animation-duration: 35s; animation-delay: 0s;">
+    <img src="photo25.jpg" alt="Us">
+</div>
+
+    <!-- LOGIN BOX -->
+    <div id="login">
+        <h1>Welcome Baby</h1>
+        <p>Would you please enter the password to continue? loveu</p>
+        <input type="password" id="password" placeholder="Enter password" />
+        <button onclick="checkPassword()">Unlock Website</button>
+        <p id="error">WRONG KA BABY</p>
+    </div>
+</div>
+
+    <!-- MAIN SITE -->
+    <div id="site">
+        <!-- Add this inside <body>, right after <div id="site"> -->
+<audio id="bg-music" src="bgmusic.mp3" loop></audio>
+<p id="music-note" style="text-align:center; margin-top:15px; color:#880e4f; display:none; font-style:italic;">
+    🎵 This song reminds me of you…
+</p>
+<div id="music-controls" style="margin:20px auto; text-align:center;">
+    <button id="mute-btn" style="padding:8px 16px; border-radius:12px; background:#ad1457; color:white; border:none; cursor:pointer;">
+        🔊 Mute
+    </button>
+    <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.2" 
+           style="width:150px; vertical-align:middle; margin-left:10px;">
+</div>
+
+        <h2> Happy Monthsarry Langga! </h2>
+        <p></p>
+
+        <!-- NAVIGATION BUTTONS -->
+        <div class="buttons">
+            <button onclick="showSection('letter')">💌 Love Letter</button>
+            <button onclick="showSection('moments')">🎬 Moments</button>
+            <button onclick="showSection('gallery')">📸 Gallery</button>
+            <button onclick="showSection('carousel-section')">🎠 Carousel</button>
+        </div>
+
+        <!-- LOVE LETTER SECTION -->
+        <div id="letter" class="section love-letter">
+            <h2>💌 MY LOVE LETTER 💌</h2>
+            <p class="love-text">
+                My dearest Langga, Hi hahahahhahaha is this corny mahal? whatever i just want to tell you that i am so happy with u, i just want to tell everybody how lucky i am to have u as my girlfriend🌸. The moment you say yes to me remember that? i was so confuse at that time baby i don't know what to feel, i can't explain it i thought long pa before moko sagutin happy gud kaau ko ato baby i just can't express it. A little background on why i fall inlove with u so much, haysssss i remember it ginakilig ko HAHAHAHAHHAHAHAHAHA langga wala gudko gatuo na maabut tas ingani, kase my thinking that time is you're too way out of my league huhu then naa pa sya so nag lay low gudko, pero pero i feel like theres something talaga na pinanghahawakan ko na meron akong chance hahahahahhah, so i take it, i take the chance, i shoot it, tangena 3 points. If kabalo raka baby unsa ka kaperfect sakung pananaw, if ikaw nag ako pati ikaw mabuang saimong sarili. Og i just want to thank you for everything, you listen to me, you know how to handle me og labaw sa tanan supportive ka sa tanan nakung buhaton isa pa i want to enlighten you, naging rason ka para mubalik ko ani akong gina procastinate ra sauna magcode, i just feel like deserve nimo tanan, deserve nimo mahatagag memorable nga gift dili ra materials, gift na naay sentimental value and that's the gift i want to give to u, I LOVE U BABY HAPPY MONTHSARRY MAGMAHALAN LANG TAYO HA!!🌸
+            </p>
+            <div class="heart" style="left: 10%; animation-delay: 0s;">❤️</div>
+            <div class="heart" style="left: 30%; animation-delay: 1s;">💖</div>
+            <div class="heart" style="left: 50%; animation-delay: 2s;">💕</div>
+            <div class="heart" style="left: 70%; animation-delay: 1.5s;">💓</div>
+            <div class="heart" style="left: 90%; animation-delay: 0.7s;">💗</div>
+        </div>
+
+        <!-- MOMENTS / VIDEO SECTION -->
+        <div id="moments" class="section">
+            <h3>💕 Moments where i fall inlove with u 💕</h3>
+            <p>My baby Aya💕</p>
+            <!-- RIDDLE LOCK -->
+<div id="riddle-lock">
+    <h4>🔒 Before you unlock our moments…</h4>
+    <p>
+        I may not speak, but I show how much I care.<br>
+        I grow every day the more we share.<br>
+        What am I?
+    </p>
+
+    <input type="text" id="riddle-answer" placeholder="Your answer here 💕" />
+    <button onclick="unlockMoments()">Unlock Our Moments</button>
+    <p id="riddle-error">Hmm… try again baby 💗</p>
+</div>
+
+            <div class="video-gallery">
+                <div class="video-card" onclick="openVideoModal(this)">
+                    <video src="video1.mp4" muted playsinline></video>
+                    <div class="play-overlay">▶️</div>
+                    <p class="caption">Remember this baby?? you're mad at this time kay ginapugos taka sabayan ko mubuhat og kite hahahha you're so funny kase you really want to be alone kase nga independent ka kaya mo sarili mo, but i insist so gipaapas takas ground para ikaw nalang tig video and look at you in the video very mad HAHAHHAHAHAHHAAHAH so cutie.</p>
+                </div>
+                <div class="video-card" onclick="openVideoModal(this)">
+                    <video src="video2.mp4" muted playsinline></video>
+                    <div class="play-overlay">▶️</div>
+                    <p class="caption">Baby you know what? this is the time i fall inlove with u hehe, this is the time na patay na patay ako sayo mahal i like how you make people listen to you and the way how you talk and of course your confidence, this is the time where i realized this is it, this is the girl that is for me. Realtalk lang baby you have the qualifications and traits that i wish i could find someday haha but thank god i met you earlier than i thought, please don't stop making people happy, please don't stop loving me and I too will never let that happen. Just want to let you know that you're funny without you realizing it, you're natural I LIKE U AND I LOVEU!!</p>
+                </div>
+                <div class="video-card" onclick="openVideoModal(this)">
+                    <video src="video3.mp4" muted playsinline></video>
+                    <div class="play-overlay">▶️</div>
+                    <p class="caption">HAHAHAHAHAHAH why naman sad ang baby naku na, I was so happy at this time because you're very comfortable na to me and i feel like you want me always by yourside, i get kilig somuch assuming that hahahahhahah. As much as possible everytime we see each other i don't want to see you sad and if i pansin that you're getting sad na i do it this way, you know what baby i want to annoy you everytime like every minute jud i just find it cute when you're getting angry tungod sa akoa but not in a bad way na suko gudka ha, you're very cute kaya when you lift that eyebrow and those libaterns eyes loveu my cutie pattotie always annoyed girl.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- PHOTO GALLERY SECTION -->
+        <div id="gallery" class="section">
+            <h3>NAIMPOK NA PAGMAMAHAL PARA SA TAGAPANGASIWA AT TAGAWASTO</h3>
+            <p>Mga larawang masaya ako na kasama ka di lang halata💕</p>
+            <div class="gallery">
+                <div>
+                    <img src="photo2.jpg" onclick="openModal(this)" />
+                    <p class="caption">Explain this moment...</p>
+                </div>
+                <div>
+                    <img src="photo1.jpg" onclick="openModal(this)" />
+                    <p class="caption">Share the story...</p>
+                </div>
+                <div>
+                    <img src="photo" onclick="openModal(this)" />
+                    3
+                    <p class="caption">Why is this meaningful?</p>
+                </div>
+                <div>
+                    <img src="photo27.jpg" onclick="openModal(this)" />
+                    <p class="caption">Describe the feeling...</p>
+                </div>
+                <div>
+                    <img src="photo6.jpg" onclick="openModal(this)" />
+                    <p class="caption">Your thoughts here...</p>
+                </div>
+                <div>
+                    <img src="photo7.jpg" onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+                <div>
+                    <img src="photo8.jpg" onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+                <div>
+                    <img src="photo28.jpg" onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+                 <div>
+                    <img src="photo29.jpg"onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+                 <div>
+                    <img src="photo12.jfif" onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+                <div>
+                    <img src="photo13.jfif" onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+                <div>
+                    <img src="photo14.jfif" onclick="openModal(this)" />
+                    <p class="caption">Memories from this day...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAROUSEL SECTION -->
+        <div id="carousel-section" class="section">
+            <h3> MY BABY SO PRETTY!!</h3>
+            <p>built this spinning little bitch, cause this is what you do to me🙄🙄</p>
+            <div class="carousel-container">
+                <button class="carousel-btn prev" onclick="rotateCarousel(-1)">‹</button>
+                <div class="carousel">
+                    <img src="photo26.jpg" class="carousel-item" />
+                    <img src="photo15.jfif" class="carousel-item" />
+                    <img src="photo16.jfif" class="carousel-item" />
+                    <img src="photo17.jfif" class="carousel-item" />
+                    <img src="photo18.jfif" class="carousel-item" />
+                    <img src="photo19.jpg" class="carousel-item" />
+                    <img src="photo20.jfif" class="carousel-item" />
+                    <img src="photo21.jfif" class="carousel-item" />
+                    
+                </div>
+                <button class="carousel-btn next" onclick="rotateCarousel(1)">›</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- GALLERY MODAL -->
+    <div id="gallery-modal">
+        <span id="modal-close">&times;</span>
+        <img id="modal-img" />
+        <p id="modal-caption"></p>
+    </div>
+
+    <!-- VIDEO MODAL -->
+    <div id="video-modal">
+        <span id="video-modal-close">&times;</span>
+        <video id="modal-video" controls></video>
+        <p id="modal-video-caption"></p>
+    </div>
+     <!-- FINAL POPUP -->
+<div id="final-popup">
+    <div class="final-popup-box">
+        <span id="final-close">×</span>
+
+        <h3> For You, Always </h3>
+
+        <p class="final-popup-text">
+            If you’re reading this, it means you explored everything I made for you.
+            <br><br>
+            This website is more than a gift.
+            It’s proof that you are loved deeply, intentionally, and endlessly.
+            <br><br>
+            No matter where life takes us,
+            I hope you come back here someday
+            and remember how much you mean to me Baby.
+        </p>
+
+        <p class="final-popup-sign">
+            — Yours, always💖 
+        </p>
+    <script>
+/* =========================================================
+   GLOBAL STATE (single source of truth)
+========================================================= */
+
+const STATE = {
+    visitedSections: new Set(),
+    finalPopupShown: false,
+    carousel: {
+        angle: 0,
+        radius: window.innerWidth < 768 ? 320 : 500,
+        interval: null
+    },
+    reduceMotion: window.matchMedia('(prefers-reduced-motion: reduce)').matches
+};
+
+/* =========================================================
+   LOGIN / AUTH (simple client-side gate)
+========================================================= */
+
+const CORRECT_PASSWORD = "debut18";
+
+function checkPassword() {
+    const input = document.getElementById("password").value.trim();
+    const error = document.getElementById("error");
+
+    if (input !== CORRECT_PASSWORD) {
+        error.style.display = "block";
+        return;
+    }
+
+    error.style.display = "none";
+    document.getElementById("login-container").style.display = "none";
+    document.getElementById("site").style.display = "block";
+
+    // Enable background & music after user interaction
+    document.body.classList.add("show-parallax");
+    startMusic();
+
+    showSection("letter");
+    initCarousel();
+}
+
+document.getElementById("password")
+    .addEventListener("keyup", e => e.key === "Enter" && checkPassword());
+
+/* =========================================================
+   MUSIC (autoplay-safe)
+========================================================= */
+
+function startMusic() {
+    const music = document.getElementById("bg-music");
+    if (!music) return;
+
+    music.volume = 0.2;
+    music.play().catch(() => {});
+    document.getElementById("music-note").style.display = "block";
+}
+
+/* =========================================================
+   SECTION NAVIGATION (single clean version)
+========================================================= */
+
+function showSection(id) {
+    document.querySelectorAll("#site .section").forEach(sec => {
+        sec.style.display = "none";
+        sec.style.opacity = 0;
+    });
+
+    if (STATE.carousel.interval) {
+        clearInterval(STATE.carousel.interval);
+        STATE.carousel.interval = null;
+    }
+
+    const active = document.getElementById(id);
+    if (!active) return;
+
+    active.style.display = "block";
+    requestAnimationFrame(() => active.style.opacity = 1);
+
+    STATE.visitedSections.add(id);
+    checkFinalPopup();
+
+    if (id === "carousel-section" && !STATE.reduceMotion) {
+        STATE.carousel.interval = setInterval(() => rotateCarousel(1), 3000);
+    }
+}
+
+/* =========================================================
+   FINAL POPUP (FIXED & RELIABLE)
+========================================================= */
+
+function checkFinalPopup() {
+    const required = ["letter", "moments", "gallery", "carousel-section"];
+    const unlocked = required.every(id => STATE.visitedSections.has(id));
+
+    if (unlocked && !STATE.finalPopupShown) {
+        STATE.finalPopupShown = true;
+
+        setTimeout(() => {
+            document.getElementById("final-popup").classList.add("show");
+        }, 1200);
+    }
+}
+
+document.getElementById("final-close")
+    .addEventListener("click", () =>
+        document.getElementById("final-popup").classList.remove("show")
+    );
+
+/* =========================================================
+   3D CAROUSEL (clean math, responsive)
+========================================================= */
+
+function initCarousel() {
+    const items = document.querySelectorAll(".carousel-item");
+    const total = items.length;
+    const theta = 360 / total;
+
+    items.forEach((item, i) => {
+        item.style.transform =
+            `rotateY(${i * theta}deg) translateZ(${STATE.carousel.radius}px)`;
+        item.style.backfaceVisibility = "hidden";
+    });
+}
+
+function rotateCarousel(direction) {
+    const items = document.querySelectorAll(".carousel-item");
+    const theta = 360 / items.length;
+
+    STATE.carousel.angle += direction * theta;
+    document.querySelector(".carousel").style.transform =
+        `translateZ(-${STATE.carousel.radius}px) rotateY(${STATE.carousel.angle}deg)`;
+}
+
+/* =========================================================
+   GALLERY MODAL
+========================================================= */
+
+const galleryModal = document.getElementById("gallery-modal");
+const modalImg = document.getElementById("modal-img");
+const modalCaption = document.getElementById("modal-caption");
+
+function openModal(img) {
+    galleryModal.style.display = "flex";
+    modalImg.src = img.src;
+    modalCaption.textContent = img.nextElementSibling?.textContent || "";
+}
+
+document.getElementById("modal-close").onclick = () =>
+    galleryModal.style.display = "none";
+
+galleryModal.onclick = e => {
+    if (e.target === galleryModal) galleryModal.style.display = "none";
+};
+
+/* =========================================================
+   VIDEO MODAL
+========================================================= */
+
+const videoModal = document.getElementById("video-modal");
+const modalVideo = document.getElementById("modal-video");
+const modalVideoCaption = document.getElementById("modal-video-caption");
+
+function openVideoModal(card) {
+    const video = card.querySelector("video");
+
+    modalVideo.src = video.src;
+    modalVideoCaption.textContent =
+        card.querySelector(".caption").textContent;
+
+    videoModal.style.display = "flex";
+    modalVideo.play();
+}
+
+document.getElementById("video-modal-close").onclick = () => {
+    modalVideo.pause();
+    videoModal.style.display = "none";
+};
+
+/* =========================================================
+   RIDDLE LOCK
+========================================================= */
+
+function unlockMoments() {
+    const answer = document.getElementById("riddle-answer")
+        .value.trim().toLowerCase();
+
+    const valid = ["love", "our love", "relationship"];
+
+    if (!valid.includes(answer)) {
+        document.getElementById("riddle-error").style.display = "block";
+        return;
+    }
+
+    document.getElementById("riddle-lock").innerHTML =
+        "<h3>💖 You unlocked my heart 💖</h3><p>I love you so much baby…</p>";
+
+    setTimeout(() => {
+        document.getElementById("riddle-lock").style.display = "none";
+        document.querySelector("#moments .video-gallery").style.display = "grid";
+    }, 1200);
+}
+
+/* =========================================================
+   PARALLAX BACKGROUND (single loop, optimized)
+========================================================= */
+
+const bg = document.getElementById("parallax-bg");
+let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
+
+function animateParallax() {
+    if (document.body.classList.contains("show-parallax") && !STATE.reduceMotion) {
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+
+        bg.style.transform =
+            `translate3d(${currentX}px, ${currentY}px, 0) scale(1.03)`;
+    }
+    requestAnimationFrame(animateParallax);
+}
+animateParallax();
+
+document.addEventListener("mousemove", e => {
+    targetX = (e.clientX / innerWidth - 0.5) * 6;
+    targetY = (e.clientY / innerHeight - 0.5) * 6;
+});
+
+/* =========================================================
+   CURSOR HEARTS (throttled for mobile)
+========================================================= */
+
+let lastHeart = 0;
+
+function createHeart(x, y) {
+    const heart = document.createElement("div");
+    heart.className = "cursor-heart";
+    heart.textContent = ["💖","💕","💗","💘","❤️"]
+        [Math.floor(Math.random() * 5)];
+    heart.style.left = x + "px";
+    heart.style.top = y + "px";
+    document.body.appendChild(heart);
+    setTimeout(() => heart.remove(), 1000);
+}
+
+document.addEventListener("mousemove", e => {
+    const delay = window.innerWidth < 768 ? 150 : 80;
+    if (Date.now() - lastHeart < delay) return;
+    lastHeart = Date.now();
+    createHeart(e.clientX, e.clientY);
+});
+/* =========================================================
+   MUSIC CONTROLS
+========================================================= */
+
+const music = document.getElementById("bg-music");
+const muteBtn = document.getElementById("mute-btn");
+const volumeSlider = document.getElementById("volume-slider");
+
+// Mute / Unmute toggle
+muteBtn.addEventListener("click", () => {
+    music.muted = !music.muted;
+    muteBtn.textContent = music.muted ? "🔇 Unmute" : "🔊 Mute";
+});
+
+// Volume slider
+volumeSlider.addEventListener("input", () => {
+    music.volume = volumeSlider.value;
+    if (music.volume === 0) {
+        music.muted = true;
+        muteBtn.textContent = "🔇 Unmute";
+    } else {
+        music.muted = false;
+        muteBtn.textContent = "🔊 Mute";
+    }
+});
+/* =========================================================
+   SLOW FLOATING LOGIN BOX
+========================================================= */
+
+const loginBox = document.getElementById("login");
+
+let posX = window.innerWidth / 2 - loginBox.offsetWidth / 2;
+let posY = window.innerHeight / 2 - loginBox.offsetHeight / 2;
+
+let deltaX = 0.3; // horizontal speed
+let deltaY = 0.2; // vertical speed
+
+function floatLoginBox() {
+    const maxX = window.innerWidth - loginBox.offsetWidth;
+    const maxY = window.innerHeight - loginBox.offsetHeight;
+
+    // Update position
+    posX += deltaX;
+    posY += deltaY;
+
+    // Bounce off edges
+    if (posX <= 0 || posX >= maxX) deltaX *= -1;
+    if (posY <= 0 || posY >= maxY) deltaY *= -1;
+
+    loginBox.style.position = "absolute";
+    loginBox.style.left = posX + "px";
+    loginBox.style.top = posY + "px";
+
+    requestAnimationFrame(floatLoginBox);
+}
+
+floatLoginBox();
+</script>
+    </div>
+</div>
+
+</body>
+</html>
