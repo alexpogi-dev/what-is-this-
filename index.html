@@ -501,123 +501,48 @@ body.show-parallax #parallax-bg {
             margin-top: 10px;
         }
         /* FINAL POPUP OVERLAY */
-#final-popup {
+        .popup-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    display: flex;
-    justify-content: center;
+    background: rgba(0,0,0,0.6);
+    display: none;
     align-items: center;
-    z-index: 5000;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.8s ease;
-}
-
-/* SHOW STATE */
-#final-popup.show {
-    opacity: 1;
-    pointer-events: all;
-}
-
-/* POPUP BOX */
-.final-popup-box {
-    background: linear-gradient(135deg, #fff0f7, #fde4f1);
-    padding: 45px 40px;
-    border-radius: 25px;
-    max-width: 520px;
-    width: 90%;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 30px 70px rgba(173, 20, 87, 0.35);
-    animation: popupRise 1s ease forwards;
-}
-
-/* CLOSE BUTTON */
-#final-close {
-    position: absolute;
-    top: 15px;
-    right: 22px;
-    font-size: 1.8rem;
-    cursor: pointer;
-    color: #ad1457;
-}
-
-/* TEXT */
-.final-popup-box h3 {
-    font-size: 2.2rem;
-    margin-bottom: 25px;
-    color: #880e4f;
-}
-
-.final-popup-text {
-    font-family: 'Georgia', serif;
-    font-size: 1.2rem;
-    line-height: 2;
-    color: #6a003a;
-}
-
-.final-popup-sign {
-    margin-top: 35px;
-    font-style: italic;
-    font-size: 1.1rem;
-}
-.popup-overlay {
-    position: fixed;
-    inset: 0;
+    justify-content: center;
     z-index: 99999;
-    pointer-events: none;
-    touch-action: manipulation;
-}
-.popup-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-
-    font-size: 28px;
-    background: rgba(255,255,255,0.9);
-    border-radius: 50%;
-    width: 44px;
-    height: 44px;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    cursor: pointer;
-    z-index: 100000;
-
-    pointer-events: none;
-    touch-action: manipulation;
 }
 .popup-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.6);
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: center;
     z-index: 99999;
+}
+.popup-overlay.show {
+    display: flex;              /* 🔑 SHOW STATE */
 }
 
 .popup {
     background: white;
     padding: 24px;
     border-radius: 16px;
-    position: relative;
+    max-width: 90%;
+    text-align: center;
 }
 
-.popup-close {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    width: 44px;
-    height: 44px;
-    font-size: 28px;
+.popup-btn {
+    margin-top: 16px;
+    padding: 12px 24px;
+    font-size: 16px;
+    border: none;
+    border-radius: 999px;
     cursor: pointer;
-    z-index: 100000;
-    pointer-events: auto;
+    background: #ffb6c1;
+    color: #4a0033;
 }
+
+
 
 /* ANIMATION */
 @keyframes popupRise {
@@ -857,10 +782,34 @@ body.show-parallax #parallax-bg {
     box-shadow: 0 6px 15px rgba(0,0,0,0.2);
 }
 
+.popup {
+    background: white;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 90%;
+    text-align: center;
+    font-size: large;
+    position: justify;
+    font: 1em sans-serif;
+}
+
+.popup-btn {
+    margin-top: 16px;
+    padding: 12px 24px;
+    font-size: 25px;
+    border: none;
+    border-radius: 999px;
+    cursor: pointer;
+    background: #ffb6c1;
+    color: #ffffff;
+    width: 100%;
+}
+
 
     </style>
 </head>
 <body>
+
     <div id="parallax-bg"></div>
     <!-- PASSWORD PAGE -->
     <div id="login-container">
@@ -1054,26 +1003,19 @@ body.show-parallax #parallax-bg {
         <p id="modal-video-caption"></p>
     </div>
      <!-- FINAL POPUP -->
-<div id="final-popup">
-    <div class="final-popup-box">
-        <span id="final-close">×</span>
+<div class="popup-overlay" id="finalPopup">
+    <div class="popup">
+        <p> If you’re reading this, it means you explored everything I made for you.
+            This website is more than a gift.It’s proof that you are loved deeply, intentionally, and endlessly.
+            No matter where life takes us,I hope you come back here someday
+            and remember how much you mean to me Baby.💗</p>
 
-        <h3> For You, Always </h3>
+        <button class="popup-btn" id="closePopupBtn">
+            Continue
+        </button>
+    </div>
+</div>
 
-        <p class="final-popup-text">
-            If you’re reading this, it means you explored everything I made for you.
-            <br><br>
-            This website is more than a gift.
-            It’s proof that you are loved deeply, intentionally, and endlessly.
-            <br><br>
-            No matter where life takes us,
-            I hope you come back here someday
-            and remember how much you mean to me Baby.
-        </p>
-
-        <p class="final-popup-sign">
-            — Yours, always💖 
-        </p>
     <script>
 /* =========================================================
    GLOBAL STATE (single source of truth)
@@ -1166,23 +1108,21 @@ function showSection(id) {
    FINAL POPUP (FIXED & RELIABLE)
 ========================================================= */
 
-function checkFinalPopup() {
-    const required = ["letter", "moments", "gallery", "carousel-section"];
-    const unlocked = required.every(id => STATE.visitedSections.has(id));
+const popup = document.getElementById("finalPopup");
+const closeBtn = document.getElementById("closePopupBtn");
 
-    if (unlocked && !STATE.finalPopupShown) {
-        STATE.finalPopupShown = true;
-
-        setTimeout(() => {
-            document.getElementById("final-popup").classList.add("show");
-        }, 1200);
-    }
+function showFinalPopup() {
+    popup.classList.add("show");
+    document.body.style.overflow = "hidden";
 }
 
-document.getElementById("final-close")
-    .addEventListener("click", () =>
-        document.getElementById("final-popup").classList.remove("show")
-    );
+function closePopup() {
+    popup.classList.remove("show");
+    document.body.style.overflow = "auto";
+}
+
+closeBtn.addEventListener("click", closePopup);
+closeBtn.addEventListener("touchstart", closePopup);
 
 /* =========================================================
    3D CAROUSEL (clean math, responsive)
@@ -1401,16 +1341,51 @@ musicBtn.addEventListener("click", () => {
         isPlaying = false;
     }
 });
-const closeBtn = document.querySelector(".popup-close");
-const popup = document.querySelector(".popup-overlay");
+function checkFinalPopup() {
+    if (STATE.finalPopupShown) return;
 
-function closePopup() {
-    popup.style.display = "none";
-    document.body.style.overflow = "auto";
+    if (STATE.visitedSections.size >= 4) {
+        STATE.finalPopupShown = true;
+        setTimeout(showFinalPopup, 1000);
+    }
+}
+function checkFinalPopup() {
+    if (!STATE.finalPopupShown && STATE.visitedSections.size >= 4) {
+        STATE.finalPopupShown = true;
+        setTimeout(showFinalPopup, 1000);
+    }
 }
 
-closeBtn.addEventListener("click", closePopup);
-closeBtn.addEventListener("touchstart", closePopup);
+function showSection(id) {
+    document.querySelectorAll("#site .section").forEach(sec => {
+        sec.style.display = "none";
+        sec.style.opacity = 0;
+    });
+
+    if (STATE.carousel.interval) {
+        clearInterval(STATE.carousel.interval);
+        STATE.carousel.interval = null;
+    }
+
+    const active = document.getElementById(id);
+    if (!active) return;
+
+    active.style.display = "block";
+    requestAnimationFrame(() => active.style.opacity = 1);
+
+    STATE.visitedSections.add(id);
+
+    // ✅ FINAL POPUP CHECK
+    if (!STATE.finalPopupShown && STATE.visitedSections.size >= 4) {
+        STATE.finalPopupShown = true;
+        setTimeout(showFinalPopup, 1000);
+    }
+
+    if (id === "carousel-section" && !STATE.reduceMotion) {
+        STATE.carousel.interval = setInterval(() => rotateCarousel(1), 3000);
+    }
+}
+
 </script>
 
     </div>
