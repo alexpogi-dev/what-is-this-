@@ -341,8 +341,7 @@ body.show-parallax #parallax-bg {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            display: block;
-            pointer-events: none;
+            display: block;;
         }
 
         .video-card .caption {
@@ -467,33 +466,43 @@ body.show-parallax #parallax-bg {
             max-width: 80%;
         }
 
-        #video-modal {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0, 0, 0, 0.9);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            flex-direction: column;
-        }
+       .video-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.95);
+    display: none;
+    z-index: 100000;
 
-        #video-modal-close {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            font-size: 2.5rem;
-            color: white;
-            cursor: pointer;
-            z-index: 1001;
-            touch-action: manipulation;   /* 🔑 MOBILE FIX */
-            padding: 10px;                /* 🔑 BIGGER TAP AREA */
-        }
-        #modal-video {
-            max-width: 90%;
-            max-height: 80%;
-            border-radius: 20px;
-        }
+    align-items: center;
+    justify-content: center;
+}
+
+.video-modal.show {
+    display: flex;
+}
+
+.video-modal video {
+    width: 100%;
+    height: 100%;
+    max-width: 100vw;
+    max-height: 100vh;
+    object-fit: contain;
+}
+
+/* Close button */
+#videoCloseBtn {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 32px;
+    color: white;
+    cursor: pointer;
+    z-index: 100001;
+
+    padding: 10px;
+    touch-action: manipulation;
+}
+
 
         #modal-video-caption {
             color: white;
@@ -806,23 +815,37 @@ body.show-parallax #parallax-bg {
     color: #ffffff;
     width: 100%;
 }
-#modal-video {
-    pointer-events: none;   /* 🔑 lets taps pass through */
-}
 .popup {
     max-height: 80vh;          /* limit height */
     overflow-y: auto;          /* enable scrolling */
     -webkit-overflow-scrolling: touch; /* smooth mobile scroll */
 }
 body.popup-open {
-    position: fixed;
-    width: 100%;
+    overflow: hidden;
+}
+.popup-overlay {
+    pointer-events: auto;
+}
+
+.popup {
+    pointer-events: auto;
+    position: relative;
+    z-index: 100000;
+}
+
+.popup-btn {
+    pointer-events: auto;
+    touch-action: manipulation;
 }
 
 
     </style>
 </head>
 <body>
+    <div class="video-modal" id="videoModal">
+    <span id="videoCloseBtn">&times;</span>
+    <video id="modalVideo" controls playsinline></video>
+</div>
 
     <div id="parallax-bg"></div>
     <!-- PASSWORD PAGE -->
@@ -907,17 +930,17 @@ body.popup-open {
 </div>
 
             <div class="video-gallery">
-                <div class="video-card" onclick="openVideoModal(this)">
+                <div class="video-card" onclick="openVideo(this.querySelector('video').src)">
                     <video src="video1.mp4" muted playsinline></video>
                     <div class="play-overlay">▶️</div>
                     <p class="caption">Remember this baby?? you're mad at this time kay ginapugos taka sabayan ko mubuhat og kite hahahha you're so funny kase you really want to be alone kase nga independent ka kaya mo sarili mo, but i insist so gipaapas takas ground para ikaw nalang tig video and look at you in the video very mad HAHAHHAHAHAHHAAHAH so cutie.</p>
                 </div>
-                <div class="video-card" onclick="openVideoModal(this)">
+                <div class="video-card" onclick="openVideo(this.querySelector('video').src)">
                     <video src="video2.mp4" muted playsinline></video>
                     <div class="play-overlay">▶️</div>
                     <p class="caption">Baby you know what? this is the time i fall inlove with u hehe, this is the time na patay na patay ako sayo mahal i like how you make people listen to you and the way how you talk and of course your confidence, this is the time where i realized this is it, this is the girl that is for me. Realtalk lang baby you have the qualifications and traits that i wish i could find someday haha but thank god i met you earlier than i thought, please don't stop making people happy, please don't stop loving me and I too will never let that happen. Just want to let you know that you're funny without you realizing it, you're natural I LIKE U AND I LOVEU!!</p>
                 </div>
-                <div class="video-card" onclick="openVideoModal(this)">
+                <div class="video-card" onclick="openVideo(this.querySelector('video').src)">
                     <video src="video3.mp4" muted playsinline></video>
                     <div class="play-overlay">▶️</div>
                     <p class="caption">HAHAHAHAHAHAH why naman sad ang baby naku na, I was so happy at this time because you're very comfortable na to me and i feel like you want me always by yourside, i get kilig somuch assuming that hahahahhahah. As much as possible everytime we see each other i don't want to see you sad and if i pansin that you're getting sad na i do it this way, you know what baby i want to annoy you everytime like every minute jud i just find it cute when you're getting angry tungod sa akoa but not in a bad way na suko gudka ha, you're very cute kaya when you lift that eyebrow and those libaterns eyes loveu my cutie pattotie always annoyed girl.</p>
@@ -1008,13 +1031,6 @@ body.popup-open {
         <span id="modal-close">&times;</span>
         <img id="modal-img" />
         <p id="modal-caption"></p>
-    </div>
-
-    <!-- VIDEO MODAL -->
-    <div id="video-modal">
-        <span id="video-modal-close">&times;</span>
-        <video id="modal-video" controls></video>
-        <p id="modal-video-caption"></p>
     </div>
      <!-- FINAL POPUP -->
 <div class="popup-overlay" id="finalPopup">
@@ -1112,8 +1128,17 @@ function showSection(id) {
     active.style.display = "block";
     requestAnimationFrame(() => active.style.opacity = 1);
 
-    STATE.visitedSections.add(id);
-    checkFinalPopup();
+    // ✅ COUNT ONLY REAL SECTIONS
+    const validSections = ["letter", "moments", "gallery", "carousel-section"];
+    if (validSections.includes(id)) {
+        STATE.visitedSections.add(id);
+    }
+
+    // ✅ FINAL POPUP CHECK
+    if (!STATE.finalPopupShown && STATE.visitedSections.size === 4) {
+        STATE.finalPopupShown = true;
+        setTimeout(showFinalPopup, 1000);
+    }
 
     if (id === "carousel-section" && !STATE.reduceMotion) {
         STATE.carousel.interval = setInterval(() => rotateCarousel(1), 3000);
@@ -1123,6 +1148,8 @@ function showSection(id) {
 /* =========================================================
    FINAL POPUP (FIXED & RELIABLE)
 ========================================================= */
+document.getElementById("closePopupBtn").addEventListener("click", closePopup);
+document.getElementById("closePopupBtn").addEventListener("touchstart", closePopup);
 
 const popup = document.getElementById("finalPopup");
 const closeBtn = document.getElementById("closePopupBtn");
@@ -1187,25 +1214,32 @@ galleryModal.onclick = e => {
    VIDEO MODAL
 ========================================================= */
 
-const videoModal = document.getElementById("video-modal");
-const modalVideo = document.getElementById("modal-video");
-const modalVideoCaption = document.getElementById("modal-video-caption");
+const videoModal = document.getElementById("videoModal");
+const modalVideo = document.getElementById("modalVideo");
+const videoCloseBtn = document.getElementById("videoCloseBtn");
+const finalPopup = document.getElementById("finalPopup");
 
-function openVideoModal(card) {
-    const video = card.querySelector("video");
+function openVideo(src) {
+    // Hide the message popup completely
+    finalPopup.classList.remove("show");
 
-    modalVideo.src = video.src;
-    modalVideoCaption.textContent =
-        card.querySelector(".caption").textContent;
+    // Show video only
+    modalVideo.src = src;
+    videoModal.classList.add("show");
 
-    videoModal.style.display = "flex";
+    document.body.classList.add("popup-open");
     modalVideo.play();
 }
 
-document.getElementById("video-modal-close").onclick = () => {
+function closeVideo() {
     modalVideo.pause();
-    videoModal.style.display = "none";
-};
+    modalVideo.src = "";
+    videoModal.classList.remove("show");
+    document.body.classList.remove("popup-open");
+}
+
+videoCloseBtn.addEventListener("click", closeVideo);
+videoCloseBtn.addEventListener("touchstart", closeVideo);
 
 /* =========================================================
    RIDDLE LOCK
