@@ -480,13 +480,15 @@ body.show-parallax #parallax-bg {
 
         #video-modal-close {
             position: absolute;
-            top: 20px;
-            right: 30px;
-            font-size: 2rem;
+            top: 16px;
+            right: 16px;
+            font-size: 2.5rem;
             color: white;
             cursor: pointer;
+            z-index: 1001;
+            touch-action: manipulation;   /* 🔑 MOBILE FIX */
+            padding: 10px;                /* 🔑 BIGGER TAP AREA */
         }
-
         #modal-video {
             max-width: 90%;
             max-height: 80%;
@@ -785,7 +787,7 @@ body.show-parallax #parallax-bg {
 .popup {
     background: white;
     padding: 30px;
-    border-radius: 16px;
+    border-radius: 10px;
     max-width: 90%;
     text-align: center;
     font-size: large;
@@ -798,10 +800,22 @@ body.show-parallax #parallax-bg {
     padding: 12px 24px;
     font-size: 25px;
     border: none;
-    border-radius: 999px;
+    border-radius: 900px;
     cursor: pointer;
     background: #ffb6c1;
     color: #ffffff;
+    width: 100%;
+}
+#modal-video {
+    pointer-events: none;   /* 🔑 lets taps pass through */
+}
+.popup {
+    max-height: 80vh;          /* limit height */
+    overflow-y: auto;          /* enable scrolling */
+    -webkit-overflow-scrolling: touch; /* smooth mobile scroll */
+}
+body.popup-open {
+    position: fixed;
     width: 100%;
 }
 
@@ -1115,16 +1129,13 @@ const closeBtn = document.getElementById("closePopupBtn");
 
 function showFinalPopup() {
     popup.classList.add("show");
-    document.body.style.overflow = "hidden";
+    document.body.classList.add("popup-open");
 }
 
 function closePopup() {
     popup.classList.remove("show");
-    document.body.style.overflow = "auto";
+    document.body.classList.remove("popup-open");
 }
-
-closeBtn.addEventListener("click", closePopup);
-closeBtn.addEventListener("touchstart", closePopup);
 
 /* =========================================================
    3D CAROUSEL (clean math, responsive)
