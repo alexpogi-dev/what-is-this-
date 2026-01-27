@@ -837,6 +837,41 @@ body.popup-open {
     pointer-events: auto;
     touch-action: manipulation;
 }
+/* 🔥 MOBILE PERFORMANCE MODE */
+@media (max-width: 768px) {
+
+  /* Stop expensive blur */
+  .section, #login {
+    backdrop-filter: none;
+  }
+
+  /* Kill decorative animations */
+  .bubble,
+  .floating-photo,
+  .moment-heart {
+    display: none;
+  }
+
+  /* Simplify carousel */
+  .carousel-container {
+    perspective: 600px;
+  }
+
+  /* Prevent hover effects on touch */
+  button:hover,
+  .video-card:hover,
+  .gallery img:hover {
+    transform: none;
+    box-shadow: none;
+  }
+}
+.video-modal {
+    touch-action: manipulation;
+}
+
+.video-modal video {
+    max-height: 85vh;
+}
 
 
     </style>
@@ -1273,13 +1308,18 @@ const bg = document.getElementById("parallax-bg");
 let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
 
 function animateParallax() {
-    if (document.body.classList.contains("show-parallax") && !STATE.reduceMotion) {
+    if (
+  document.body.classList.contains("show-parallax") &&
+  !STATE.reduceMotion &&
+  window.innerWidth > 768
+) {
         currentX += (targetX - currentX) * 0.05;
         currentY += (targetY - currentY) * 0.05;
 
         bg.style.transform =
-            `translate3d(${currentX}px, ${currentY}px, 0) scale(1.03)`;
+            `translate3d(${-currentX}px, ${-currentY}px, 0) scale(1.1)`;
     }
+
     requestAnimationFrame(animateParallax);
 }
 animateParallax();
@@ -1432,6 +1472,9 @@ function showSection(id) {
         STATE.carousel.interval = setInterval(() => rotateCarousel(1), 3000);
     }
 }
+if (window.innerWidth < 768) {
+    document.removeEventListener("mousemove", () => {});
+}
 
 </script>
 
@@ -1439,5 +1482,4 @@ function showSection(id) {
 </div>
 </body>
 </html> 
-
 
